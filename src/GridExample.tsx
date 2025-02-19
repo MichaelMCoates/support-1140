@@ -91,35 +91,102 @@ const GridExample = () => {
   //       });
   //   };
 
+  // const onGridReady = useCallback((params: GridReadyEvent) => {
+  //   fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       const dataSource: IDatasource = {
+  //         rowCount: undefined, // behave as infinite scroll
+
+  //         getRows: (params) => {
+  //           console.log(
+  //             "asking for " + params.startRow + " to " + params.endRow
+  //           );
+
+  //           // At this point in your code, you would call the server.
+  //           // To make the demo look real, wait for 500ms before returning
+  //           setTimeout(() => {
+  //             // take a slice of the total rows
+  //             const rowsThisPage = data.slice(0, 100);
+  //             // if on or after the last page, work out the last row.
+  //             let lastRow = -1;
+  //             // if (data.length <= params.endRow) {
+  //             //   lastRow = data.length;
+  //             // }
+  //             // call the success callback
+  //             params.successCallback(rowsThisPage, lastRow);
+  //           }, 500);
+  //         },
+  //       };
+  //       params.api.setDatasource(dataSource);
+  //       params.api.setDomLayout("autoHeight");
+  //       // setRowDataSource(dataSource);
+  //       // console.log(data);
+  //       // setRowData(data);
+  //     });
+  // }, []);
+
+
   const onGridReady = useCallback((params: GridReadyEvent) => {
     fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
       .then((response) => response.json())
       .then((data) => {
-        const dataSource: IDatasource = {
-          rowCount: undefined, // behave as infinite scroll
+        // const dataSource: IDatasource = {
+        //   rowCount: undefined, // behave as infinite scroll
 
-          getRows: (params) => {
-            console.log(
-              "asking for " + params.startRow + " to " + params.endRow
-            );
+        //   getRows: (params) => {
+        //     console.log(
+        //       "asking for " + params.startRow + " to " + params.endRow
+        //     );
 
-            // At this point in your code, you would call the server.
-            // To make the demo look real, wait for 500ms before returning
-            setTimeout(() => {
-              // take a slice of the total rows
-              const rowsThisPage = data.slice(params.startRow, params.endRow);
-              // if on or after the last page, work out the last row.
-              let lastRow = -1;
-              if (data.length <= params.endRow) {
-                lastRow = data.length;
-              }
-              // call the success callback
-              params.successCallback(rowsThisPage, lastRow);
-            }, 500);
-          },
-        };
-        params.api.setDatasource(dataSource);
+        //     // At this point in your code, you would call the server.
+        //     // To make the demo look real, wait for 500ms before returning
+        //     setTimeout(() => {
+        //       // take a slice of the total rows
+        //       const rowsThisPage = data.slice(0, 100);
+        //       // if on or after the last page, work out the last row.
+        //       let lastRow = -1;
+        //       // if (data.length <= params.endRow) {
+        //       //   lastRow = data.length;
+        //       // }
+        //       // call the success callback
+        //       params.successCallback(rowsThisPage, lastRow);
+        //     }, 500);
+        //   },
+        // };
+        // params.api.setDatasource(dataSource);
+
+
+        // Adding 100 rows every 5 seconds
+        // let newRowData: any[] = []
+        // const rowsThisPage = data.slice(0, 100);
+        // newRowData = newRowData.concat(rowsThisPage);
+        // params.api.setRowData(newRowData)
+        // let totalRows = 100;
+        // setInterval(() => {
+        //     totalRows += 100;
+        //     console.log('100 more rows, total rows are ', totalRows);
+        //     const rowsThisPage = data.slice(0, 100);
+        //     newRowData = newRowData.concat(rowsThisPage);
+        //     params.api.setRowData(newRowData)
+
+        // }, 5000)
+
+        const rowsThisPage = data.slice(0, 11);
+        params.api.setRowData(rowsThisPage)
+        let row = 0;
+        setInterval(() => {
+            console.log('Updating rows: ', row)
+            // console.log('Updating rows: ', Date.now());
+            // console.log(rowsThisPage);
+            rowsThisPage[row % 11].athlete = `Updated #${row}`
+            params.api.setRowData(rowsThisPage)
+            row += 1;
+        }, 500)
+
+
         params.api.setDomLayout("autoHeight");
+        // params.api.setRowData()
         // setRowDataSource(dataSource);
         // console.log(data);
         // setRowData(data);
@@ -161,14 +228,13 @@ const GridExample = () => {
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         rowBuffer={0}
-        rowModelType={"infinite"}
         cacheBlockSize={100}
         cacheOverflowSize={2}
         maxConcurrentDatasourceRequests={1}
-        infiniteInitialRowCount={1000}
         maxBlocksInCache={10}
         onGridReady={onGridReady}
         frameworkComponents={CellRenderer}
+        suppressAnimationFrame={true}
       />
     </div>
   );
