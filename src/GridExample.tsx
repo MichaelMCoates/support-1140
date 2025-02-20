@@ -1,21 +1,7 @@
-import { ModuleRegistry } from "@ag-grid-community/core";
-import { InfiniteRowModelModule } from "@ag-grid-community/infinite-row-model";
 import "@ag-grid-community/styles/ag-grid.css";
-import { ColDef, GridReadyEvent, IDatasource } from "ag-grid-community";
+import { ColDef, GridReadyEvent } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useMemo, useRef, useState } from "react";
-
-ModuleRegistry.registerModules([InfiniteRowModelModule]);
-
-const CellRenderer = (props: any) => {
-  if (props.value !== undefined) {
-    console.log(`cellRenderer: value exists`);
-    return props.value;
-  } else {
-    console.log(`cellRenderer: showing spinner`);
-    return <img src={"https://www.ag-grid.com/example-assets/loading.gif"} />;
-  }
-};
 
 const GridExample = () => {
   const gridRef = useRef<AgGridReact>(null);
@@ -61,7 +47,7 @@ const GridExample = () => {
             rowsThisPage[row % 11].athlete = `Updated #${row}`
             params.api.setRowData(rowsThisPage)
             row += 1;
-        }, 500)
+        }, 200)
 
 
         params.api.setDomLayout("autoHeight");
@@ -75,12 +61,7 @@ const GridExample = () => {
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         rowBuffer={0}
-        cacheBlockSize={100}
-        cacheOverflowSize={2}
-        maxConcurrentDatasourceRequests={1}
-        maxBlocksInCache={10}
         onGridReady={onGridReady}
-        frameworkComponents={CellRenderer}
       />
     </div>
   );
