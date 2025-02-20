@@ -18,8 +18,6 @@ const CellRenderer = (props: any) => {
 };
 
 const GridExample = () => {
-  //   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
-  // const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
   const gridRef = useRef<AgGridReact>(null);
 
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
@@ -27,18 +25,7 @@ const GridExample = () => {
     {
       headerName: "ID",
       maxWidth: 100,
-      // it is important to have node.id here, so that when the id changes (which happens
-      // when the row is loaded) then the cell is refreshed.
       valueGetter: "node.id",
-      //   cellRenderer: (props: any) => {
-      //     if (props.value !== undefined) {
-      //       return props.value;
-      //     } else {
-      //       return (
-      //         <img src={"https://www.ag-grid.com/example-assets/loading.gif"} />
-      //       );
-      //     }
-      //   },
     },
     { field: "athlete", minWidth: 150 },
     { field: "age" },
@@ -59,118 +46,10 @@ const GridExample = () => {
     };
   }, []);
 
-  //   const gridReady = () => {
-  //     fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
-  //       .then((response) => response.json())
-  //       .then(function (data) {
-  //         // const dataSource: IDatasource = {
-  //         //   rowCount: undefined, // behave as infinite scroll
-
-  //         //   getRows: (params) => {
-  //         //     console.log(
-  //         //       "asking for " + params.startRow + " to " + params.endRow
-  //         //     );
-
-  //         //     // At this point in your code, you would call the server.
-  //         //     // To make the demo look real, wait for 500ms before returning
-  //         //     setTimeout(() => {
-  //         //       // take a slice of the total rows
-  //         //       const rowsThisPage = data.slice(params.startRow, params.endRow);
-  //         //       // if on or after the last page, work out the last row.
-  //         //       let lastRow = -1;
-  //         //       if (data.length <= params.endRow) {
-  //         //         lastRow = data.length;
-  //         //       }
-  //         //       // call the success callback
-  //         //       params.successCallback(rowsThisPage, lastRow);
-  //         //     }, 500);
-  //         //   },
-  //         // };
-  //         // setRowDataSource(dataSource);
-  //         setRowData(data);
-  //       });
-  //   };
-
-  // const onGridReady = useCallback((params: GridReadyEvent) => {
-  //   fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const dataSource: IDatasource = {
-  //         rowCount: undefined, // behave as infinite scroll
-
-  //         getRows: (params) => {
-  //           console.log(
-  //             "asking for " + params.startRow + " to " + params.endRow
-  //           );
-
-  //           // At this point in your code, you would call the server.
-  //           // To make the demo look real, wait for 500ms before returning
-  //           setTimeout(() => {
-  //             // take a slice of the total rows
-  //             const rowsThisPage = data.slice(0, 100);
-  //             // if on or after the last page, work out the last row.
-  //             let lastRow = -1;
-  //             // if (data.length <= params.endRow) {
-  //             //   lastRow = data.length;
-  //             // }
-  //             // call the success callback
-  //             params.successCallback(rowsThisPage, lastRow);
-  //           }, 500);
-  //         },
-  //       };
-  //       params.api.setDatasource(dataSource);
-  //       params.api.setDomLayout("autoHeight");
-  //       // setRowDataSource(dataSource);
-  //       // console.log(data);
-  //       // setRowData(data);
-  //     });
-  // }, []);
-
-
   const onGridReady = useCallback((params: GridReadyEvent) => {
     fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
       .then((response) => response.json())
       .then((data) => {
-        // const dataSource: IDatasource = {
-        //   rowCount: undefined, // behave as infinite scroll
-
-        //   getRows: (params) => {
-        //     console.log(
-        //       "asking for " + params.startRow + " to " + params.endRow
-        //     );
-
-        //     // At this point in your code, you would call the server.
-        //     // To make the demo look real, wait for 500ms before returning
-        //     setTimeout(() => {
-        //       // take a slice of the total rows
-        //       const rowsThisPage = data.slice(0, 100);
-        //       // if on or after the last page, work out the last row.
-        //       let lastRow = -1;
-        //       // if (data.length <= params.endRow) {
-        //       //   lastRow = data.length;
-        //       // }
-        //       // call the success callback
-        //       params.successCallback(rowsThisPage, lastRow);
-        //     }, 500);
-        //   },
-        // };
-        // params.api.setDatasource(dataSource);
-
-
-        // Adding 100 rows every 5 seconds
-        // let newRowData: any[] = []
-        // const rowsThisPage = data.slice(0, 100);
-        // newRowData = newRowData.concat(rowsThisPage);
-        // params.api.setRowData(newRowData)
-        // let totalRows = 100;
-        // setInterval(() => {
-        //     totalRows += 100;
-        //     console.log('100 more rows, total rows are ', totalRows);
-        //     const rowsThisPage = data.slice(0, 100);
-        //     newRowData = newRowData.concat(rowsThisPage);
-        //     params.api.setRowData(newRowData)
-
-        // }, 5000)
 
         const rowsThisPage = data.slice(0, 11);
         params.api.setRowData(rowsThisPage)
@@ -186,40 +65,8 @@ const GridExample = () => {
 
 
         params.api.setDomLayout("autoHeight");
-        // params.api.setRowData()
-        // setRowDataSource(dataSource);
-        // console.log(data);
-        // setRowData(data);
       });
   }, []);
-
-  // fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
-  //     .then((resp) => resp.json())
-  //     .then((data) => {
-  //         const dataSource: IDatasource = {
-  //             rowCount: undefined,
-  //             getRows: (params) => {
-  //                 console.log('asking for ' + params.startRow + ' to ' + params.endRow);
-  //                 // At this point in your code, you would call the server.
-  //                 // To make the demo look real, wait for 500ms before returning
-  //                 setTimeout(function () {
-  //                     // take a slice of the total rows
-  //                     const rowsThisPage = data.slice(params.startRow, params.endRow);
-  //                     // if on or after the last page, work out the last row.
-  //                     let lastRow = -1;
-  //                     if (data.length <= params.endRow) {
-  //                         lastRow = data.length;
-  //                     }
-  //                     // call the success callback
-  //                     params.successCallback(rowsThisPage, lastRow);
-  //                 }, 500);
-  //             }
-  //         };
-  //         params.api.setGridOption('datasource', dataSource);
-  //     });
-
-  //         });
-  // }, []);
 
   return (
     <div className={"flex flex-col"} style={{ width: "100%", height: "100%" }}>
@@ -234,7 +81,6 @@ const GridExample = () => {
         maxBlocksInCache={10}
         onGridReady={onGridReady}
         frameworkComponents={CellRenderer}
-        suppressAnimationFrame={true}
       />
     </div>
   );

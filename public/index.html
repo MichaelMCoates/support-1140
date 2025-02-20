@@ -41,17 +41,4 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
-  <script>
-  fin.desktop.main(async () => {
-    async function start() {
-    return fin.Application.start({
-        name: 'app-1',
-        uuid: 'app-1',
-        url: 'http://localhost:53000/logger.html',
-        autoShow: true
-        });
-    }
-    start().then(() => console.log('Application is running')).catch(err => console.log(err));
-  })
-</script>
 </html>
